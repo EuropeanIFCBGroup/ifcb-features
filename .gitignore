@@ -1,5 +1,7 @@
-# Windows default autosave extension
-*.asv
+__pycache__/
+*.egg
+*.egg-info
 
-# OSX / *nix default autosave extension
-*.m~
+.vscode/
+
+.ipynb_checkpoints
