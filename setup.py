@@ -15,13 +15,13 @@ reqs = [line.strip() for line in open("requirements.txt") if not line.startswith
 
 
 setup(
-    name="ifcb-analysis",
+    name="ifcb-features",
     version=version(),
     description="Feature extraction for IFCB data",
     long_description=readme(),
     license="MIT",
     author="Otso Velhonoja",
-    url="https://github.com/veot/ifcb-analysis",
+    url="https://github.com/veot/ifcb-features",
     packages=find_packages(),
     install_requires=reqs,
     classifiers=[
