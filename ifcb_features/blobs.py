@@ -1,17 +1,12 @@
 import numpy as np
-
 from scipy.ndimage import measurements
-
-from skimage.measure import regionprops
 from skimage.transform import rotate
-from skimage.util import pad
-from skimage.morphology import binary_closing, binary_dilation
 
-from .morphology import SE2, SE3, EIGHT, bwmorph_thin
+from .morphology import EIGHT
 
 
 def label_blobs(B):
-    B = np.array(B).astype(bool)
+    B = np.array(B).astype(np.bool)
     labeled, _ = measurements.label(B, structure=EIGHT)
     objects = measurements.find_objects(labeled)
     return labeled, objects
@@ -22,7 +17,7 @@ def find_blobs(B):
     eight-connectivity. returns a labeled image, the
     bounding boxes of the blobs, and the blob masks cropped
     to those bounding boxes"""
-    B = np.array(B).astype(bool)
+    B = np.array(B).astype(np.bool)
     labeled, objects = label_blobs(B)
     blobs = [labeled[obj] == ix + 1 for ix, obj in zip(range(len(objects)), objects)]
     return labeled, objects, blobs
@@ -37,7 +32,7 @@ def center_blob(B):
     h, w = B.shape
     s = max(yc, h - yc, xc, w - xc)
     m = int(np.ceil(s * 2))
-    C = np.zeros((m, m), dtype=bool)
+    C = np.zeros((m, m), dtype=np.bool)
     y0, x0 = int(np.floor(s - yc)), int(np.floor(s - xc))
     C[y0 : y0 + h, x0 : x0 + w] = B
     return C
@@ -49,7 +44,7 @@ def rotate_blob(blob, theta):
     # note that v2 uses bilinear interpolation in MATLAB
     # and that is not available in skimage rotate
     # so v3 uses nearest-neighbor
-    blob = rotate(blob, -1 * theta, order=0).astype(bool)
+    blob = rotate(blob, -1 * theta, order=0).astype(np.bool)
     # note that v2 does morphological post-processing and v3 does not
     return blob
 

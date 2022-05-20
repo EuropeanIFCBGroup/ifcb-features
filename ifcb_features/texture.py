@@ -1,7 +1,7 @@
 import numpy as np
-from skimage import img_as_float
-from skimage.exposure import rescale_intensity, histogram
 from scipy.stats import moment
+from skimage import img_as_float
+from skimage.exposure import histogram, rescale_intensity
 
 
 def masked_pixels(image, mask):
@@ -64,7 +64,7 @@ def statxture(pixels):
 
     third_moment = moment(pixels, 3) / d
 
-    uniformity = np.sum(H ** 2)
+    uniformity = np.sum(H**2)
 
     eps = np.finfo(float).eps
     entropy = 0.0 - np.sum(H * np.log2(H + eps))

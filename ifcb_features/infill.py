@@ -3,12 +3,10 @@ Provides infilling support for stitched IFCB rev 1 images
 Based on pyifcb API
 """
 import numpy as np
-from scipy.interpolate import Rbf
-
 from functools32 import lru_cache
-
-from ifcb.data.utils import BaseDictlike
 from ifcb.data.stitching import Stitcher
+from ifcb.data.utils import BaseDictlike
+from scipy.interpolate import Rbf
 
 _LEGACY_EPS = 0.000001
 

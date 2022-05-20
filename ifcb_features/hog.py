@@ -1,8 +1,5 @@
 import numpy as np
 from numpy.linalg import norm
-
-from skimage import img_as_float
-from scipy import ndimage as ndi
 from scipy.ndimage.filters import correlate
 
 
@@ -15,7 +12,7 @@ def image_hog(image):
     m = np.sqrt(L / 2)
 
     # convert to float, retain uint8 range
-    Im = image.astype(float)
+    Im = image.astype(np.float)
 
     step_x = int(np.floor(C / (nwin_x + 1)))
     step_y = int(np.floor(L / (nwin_y + 1)))
@@ -29,7 +26,7 @@ def image_hog(image):
 
     # compute orientation vectors
     angles = np.arctan2(grad_yu, grad_xr)
-    magnit = np.sqrt(grad_yu ** 2 + grad_xr ** 2)
+    magnit = np.sqrt(grad_yu**2 + grad_xr**2)
 
     # compute histogram
     cont = 0

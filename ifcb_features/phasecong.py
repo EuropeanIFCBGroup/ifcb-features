@@ -26,14 +26,13 @@
 # IFCB-specific optimizations and utilites by Joe Futrelle @ WHOI 2016
 
 import numpy as np
-from scipy.fftpack import fftshift, ifftshift
-
-from phasepack.tools import rayleighmode as _rayleighmode
-from phasepack.tools import lowpassfilter as _lowpassfilter
 
 # Try and use the faster Fourier transform functions from the pyfftw module if
 # available
 from phasepack.tools import fft2, ifft2
+from phasepack.tools import lowpassfilter as _lowpassfilter
+from phasepack.tools import rayleighmode as _rayleighmode
+from scipy.fftpack import ifftshift
 
 
 def faster_phasecong(

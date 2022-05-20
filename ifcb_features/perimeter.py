@@ -1,10 +1,6 @@
 import numpy as np
-
-from scipy.spatial import cKDTree
-from scipy.spatial.distance import pdist, cdist
 from scipy import stats
-
-from skimage.measure import regionprops
+from scipy.spatial import cKDTree
 
 from .morphology import find_perimeter
 from .random import simple_prng
@@ -24,7 +20,7 @@ def subsample_dist(A, max_n=10000):
     """subsampling version of pdist"""
     # take a min of n**2 and max of max_n samples
     n = A.shape[0]
-    m = min(n ** 2, max_n)
+    m = min(n**2, max_n)
     # now determinstically randomly sample pairs of points
     # sort the points
     six = np.argsort(np.sum(A * [np.max(A[:, 1]), 1], axis=1))

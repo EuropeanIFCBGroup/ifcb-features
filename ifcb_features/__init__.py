@@ -1,3 +1,3 @@
 """top level module for features"""
 
-from .all import RoiFeatures, BlobFeatures, compute_features
+from .all import BlobFeatures, RoiFeatures, compute_features

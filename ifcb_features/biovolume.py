@@ -1,5 +1,4 @@
 import numpy as np
-
 from scipy.ndimage.morphology import distance_transform_edt
 
 from .morphology import find_perimeter
@@ -59,7 +58,7 @@ def distmap_volume_surface_area(B, perimeter_image=None):
     # representative transect
     x = 4 * np.ma.mean(Dm) - 2
     # diamond correction
-    c1 = x ** 2 / (x ** 2 + 2 * x + 0.5)
+    c1 = x**2 / (x**2 + 2 * x + 0.5)
     # circle correction
     # c2 = np.pi / 2
     # volume = c1 * c2 * 2 * np.sum(D)

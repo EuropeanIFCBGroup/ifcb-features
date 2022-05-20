@@ -1,11 +1,12 @@
 """Reading and writing features"""
 import os
 from zipfile import ZipFile
+
 import pandas as pd
+from ifcb.data.imageio import format_image
+from ifcb.data.stitching import InfilledImages
 
 from . import compute_features
-from ifcb.data.stitching import InfilledImages
-from ifcb.data.imageio import format_image
 
 
 def bin_features(the_bin, out_dir=None, log_callback=None, log_freq=500):

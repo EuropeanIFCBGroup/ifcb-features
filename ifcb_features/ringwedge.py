@@ -1,12 +1,8 @@
-import numpy as np
-
 from functools import lru_cache
 
+import numpy as np
 from numpy.fft import fft2, fftshift
-
 from scipy.ndimage.interpolation import zoom
-
-from skimage.draw import circle, polygon
 
 # original MATLAB implementation: Kaccie Li, 2005
 # Python port: Joe Futrelle, 2016
@@ -22,7 +18,7 @@ _eps = np.finfo(float).eps
 def unit_circle(dim=_DIM):
     I = np.linspace(-1, 1, dim)
     X, Y = np.meshgrid(I, I)
-    r = np.sqrt(X ** 2 + Y ** 2)
+    r = np.sqrt(X**2 + Y**2)
     theta = np.arctan2(Y, X)
     return r, theta
 
@@ -44,10 +40,10 @@ def kaccie_ring(i, dim=301, n_rings=_N_RINGS):
     df = (1.0 / dim) * (1 / 6.45)
     f = np.linspace(-0.5 / 6.45, 0.5 / 6.45, dim + 1)[:dim]
     X, Y = np.meshgrid(f, f)
-    r = np.sqrt(X ** 2 + Y ** 2)
+    r = np.sqrt(X**2 + Y**2)
     inner_rad = (i / (n_rings - 1.0)) * (c - 3) * df  # 50 rings
     outer_rad = (i / (n_rings - 1.0)) * (c - 3) * df + (3 * df)  # 50 rings
-    out = np.zeros((dim, dim), dtype=bool)
+    out = np.zeros((dim, dim), dtype=np.bool)
     out[(r > inner_rad) & (r < outer_rad)] = 1
     return out
 
@@ -78,7 +74,7 @@ def kaccie_filter_masks(dim=_DIM):
     df = (1.0 / (dim - 1)) / 6.45
     I = np.linspace(-0.5 / 6.45, 0.5 / 6.45, dim)
     Y, X = np.meshgrid(I, I)
-    R = np.sqrt(X ** 2 + Y ** 2)
+    R = np.sqrt(X**2 + Y**2)
     filt = R > 15 * df
     return np.invert(filt), filt
 
@@ -103,7 +99,7 @@ def ring_wedge(image, dim=_DIM):
     # only use the bottom half
     half = np.vstack(
         (np.zeros(((dim // 2) + 1, dim)), np.ones((dim // 2, dim)))
-    ).astype(bool)
+    ).astype(np.bool)
     wedge_half = wedge_int_trans * half
     ring_half = int_trans * half
     # now compute unscaled wedge and ring vectors for all wedges and rings

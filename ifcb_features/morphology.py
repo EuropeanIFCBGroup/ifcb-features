@@ -1,17 +1,16 @@
 import numpy as np
+from scipy.ndimage import correlate
+from skimage.morphology import binary_dilation, disk, reconstruction
 
-from skimage.morphology import binary_dilation, binary_erosion, disk, reconstruction
-from scipy.ndimage import measurements, correlate
+EIGHT = np.ones((3, 3)).astype(np.bool)
+FOUR = disk(1).astype(np.bool)
 
-EIGHT = np.ones((3, 3)).astype(bool)
-FOUR = disk(1).astype(bool)
-
-SE2 = disk(2).astype(bool)
-SE3 = np.ones((5, 5)).astype(bool)
+SE2 = disk(2).astype(np.bool)
+SE3 = np.ones((5, 5)).astype(np.bool)
 
 
 def find_perimeter(B):
-    B = np.array(B).astype(bool) * 1
+    B = np.array(B).astype(np.bool) * 1
     """find boundaries via erosion and logical and,
     using four-connectivity"""
     # return B & np.invert(binary_erosion(B,FOUR))
@@ -42,7 +41,7 @@ def hysthresh(img, T1, T2):
 # here's how to make the LUTs
 
 def nabe(n):
-    return np.array([n>>i&1 for i in range(0,9)]).astype(bool)
+    return np.array([n>>i&1 for i in range(0,9)]).astype(np.bool)
 
 def hood(n):
     return np.take(nabe(n), np.array([[3, 2, 1],
@@ -55,7 +54,7 @@ def G1(n):
         if not(bits[i]) and (bits[i+1] or bits[(i+2) % 8]):
             s += 1
     return s==1
-            
+
 g1_lut = np.array([G1(n) for n in range(256)])
 
 def G2(n):
@@ -346,7 +345,7 @@ G123_LUT = np.array(
         0,
         0,
     ],
-    dtype=bool,
+    dtype=np.bool,
 )
 
 G123P_LUT = np.array(
@@ -608,23 +607,23 @@ G123P_LUT = np.array(
         0,
         0,
     ],
-    dtype=bool,
+    dtype=np.bool,
 )
 
 
 def bwmorph_thin(B, n_iter=1):
     mask = np.array([[8, 4, 2], [16, 0, 1], [32, 64, 128]], dtype=np.uint8)
-    skel = np.array(B).astype(bool).astype(np.uint8)
+    skel = np.array(B).astype(np.bool).astype(np.uint8)
     for n in range(n_iter):
         for lut in [G123_LUT, G123P_LUT]:
             N = correlate(skel, mask, mode="constant")
             D = np.take(lut, N)
             skel[D] = 0
-    return skel.astype(bool)
+    return skel.astype(np.bool)
 
 
 def fill_holes(B, structure=FOUR):
-    B = np.array(B).astype(bool)
+    B = np.array(B).astype(np.bool)
     seed = np.copy(B)
     seed[1:-1, 1:-1] = 1
     R = reconstruction(seed, B, method="erosion", selem=structure)

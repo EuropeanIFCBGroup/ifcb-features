@@ -1,16 +1,12 @@
 import numpy as np
-
 from numpy.linalg import eig
-
 from scipy.spatial import ConvexHull
 from scipy.spatial.distance import pdist
-
-from skimage.draw import polygon, line
-from skimage.measure import regionprops
+from skimage.draw import line, polygon
 
 
 def blob_area(B):
-    return np.sum(np.array(B).astype(bool))
+    return np.sum(np.array(B).astype(np.bool))
 
 
 def blob_extent(B, area=None):
@@ -66,8 +62,8 @@ def invmoments(B):
     F = B.ravel()
 
     def m(p, q):
-        xp = 1 if p == 0 else x ** p
-        yq = 1 if q == 0 else y ** q
+        xp = 1 if p == 0 else x**p
+        yq = 1 if q == 0 else y**q
         return np.sum(xp * yq * F)
 
     m00 = m(0, 0)
@@ -75,8 +71,8 @@ def invmoments(B):
     x_ = x - (m(1, 0) / m00)
     y_ = y - (m(0, 1) / m00)
 
-    mu_x = [1, x_] + [x_ ** p for p in [2, 3]]
-    mu_y = [1, y_] + [y_ ** p for p in [2, 3]]
+    mu_x = [1, x_] + [x_**p for p in [2, 3]]
+    mu_y = [1, y_] + [y_**p for p in [2, 3]]
 
     def mu(p, q):
         return np.sum(mu_x[p] * mu_y[q] * F)
@@ -85,7 +81,7 @@ def invmoments(B):
 
     def n(p, q):  # eta sorta looks like n
         gamma = (p + q) / 2.0 + 1.0
-        return mu(p, q) / mu00 ** gamma
+        return mu(p, q) / mu00**gamma
 
     # assign some variables so the eqns aren't impossible to read
     n20, n02 = n(2, 0), n(0, 2)
@@ -94,7 +90,7 @@ def invmoments(B):
     n12, n21 = n(1, 2), n(2, 1)
 
     phi1 = n20 + n02
-    phi2 = (n20 - n02) ** 2 + 4 * n11 ** 2
+    phi2 = (n20 - n02) ** 2 + 4 * n11**2
     phi3 = (n30 - 3 * n12) ** 2 + (3 * n21 - n03) ** 2
     phi4 = (n30 + n12) ** 2 + (n21 + n03) ** 2
     phi5 = (n30 - 3 * n12) * (n30 + n12) * ((n30 + n12) ** 2 - 3 * (n21 + n03) ** 2) + (
@@ -120,7 +116,7 @@ def convex_hull_properties(hull):
     """compute perimeter and area of convex hull"""
     ab = hull - np.roll(hull, 1, axis=0)
     # first compute length of each edge
-    C = np.sqrt(np.sum(ab ** 2, axis=1))
+    C = np.sqrt(np.sum(ab**2, axis=1))
     # perimeter is sum of these
     perimeter = np.sum(C)
     # compute distance from center to each vertex
@@ -158,7 +154,7 @@ def feret_diameter(hull):
 def convex_hull_image(hull, shape):
     """this can also be computed using
     skimage.measure.regionprops"""
-    chi = np.zeros(shape, dtype=bool)
+    chi = np.zeros(shape, dtype=np.bool)
     # points in the convex hull
     y, x = polygon(hull[:, 0], hull[:, 1])
     chi[y, x] = 1

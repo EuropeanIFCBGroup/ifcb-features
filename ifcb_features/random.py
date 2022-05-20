@@ -1,6 +1,6 @@
-import numpy as np
-
 from functools import reduce
+
+import numpy as np
 
 
 def simple_prng(n, seed=1, shape=1):

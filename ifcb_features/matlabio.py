@@ -1,9 +1,9 @@
 from __future__ import print_function
+
 import datetime
-import subprocess
 import re
+import subprocess
 from traceback import print_exc
-import os
 
 
 def reset_tty():
